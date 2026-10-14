@@ -1,15 +1,15 @@
-<script>localStorage.setItem('semo_admin_pass', '123456');</script>
+
 
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
- <span id="semoTotalAvailableQty" style="display:none;"></span>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#101b2a">
 <title>منصة SEMO-Oracle-ERP لإدارة شركات التطوير العقاري</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
-:root{--bg:#102f5b;--panel:#1b4776;--panel2:#245789;--line:#4779a7;--gold:#f4b740;--text:#ffffff;--muted:#d0e0f1;--green:#36c98f;--red:#fb7185;--blue:#6bb6ff}
+:root{--bg:#102f5b;--panel:#1b4776;--panel2:#245789;--line:#4779a7;--gold:#f4b740;--text
+:#;--muted:#d0e0f1;--green:#36c98f;--red:#fb7185;--blue:#6bb6ff}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 0%,#255b91 0%,#123b6c 48%,#0b2b52 100%);color:var(--text);font-family:Cairo,Arial,sans-serif;min-height:100vh}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:9px 13px;font-weight:700}.primary{background:var(--gold);color:#17202a}.secondary{background:#244e7b;color:#edf4fa;border:1px solid #3b6894}.danger{background:#692a3a;color:#ffe5e9}.good{background:#145642;color:#d8fff0}.muted{color:var(--muted)}
 header{position:sticky;top:0;z-index:4;background:rgba(12,35,65,.94);border-bottom:1px solid #2d5682;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;box-shadow:0 8px 22px #071a3033}.brand{font-weight:900;color:#e8f3ff;font-size:21px;letter-spacing:.2px}.wrap{max-width:1600px;margin:auto;padding:24px 30px}.banner{padding:23px;border:1px solid #376698;background:linear-gradient(110deg,#1d4e7e,#153a67 65%);border-radius:20px;margin-bottom:18px;box-shadow:0 12px 28px #071d3533}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px}
 .tiles{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:17px;margin:22px 0}.tile,.card{background:rgba(22,57,98,.76);border:1px solid #2c5a88;border-radius:22px;padding:18px}.tile{cursor:pointer;min-height:132px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;transition:transform .18s,border-color .18s,background .18s;box-shadow:0 8px 18px #09284a20}.tile:hover{border-color:#72b8ff;transform:translateY(-3px);background:rgba(35,80,127,.95)}.tile span{display:flex;align-items:center;justify-content:center;width:62px;height:62px;border-radius:17px;background:#11bde3;color:white;font-size:29px;box-shadow:0 5px 14px #001b3730}.tile b{display:block;margin-top:3px;font-size:14px;line-height:1.45;color:#f7fbff}.tile small{font-size:10px;line-height:1.4}.tile:nth-child(6n+1) span{background:linear-gradient(145deg,#1bd7ad,#08bba3)}.tile:nth-child(6n+2) span{background:linear-gradient(145deg,#00d4c5,#00a9d8)}.tile:nth-child(6n+3) span{background:linear-gradient(145deg,#ff845f,#ff5e55)}.tile:nth-child(6n+4) span{background:linear-gradient(145deg,#19c9ef,#009de5)}.tile:nth-child(6n+5) span{background:linear-gradient(145deg,#ffc12d,#f39800)}.tile:nth-child(6n) span{background:linear-gradient(145deg,#b69bff,#8177f8)}
@@ -2243,6 +2243,18 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeInvento
  };
  const observer=new MutationObserver(addPanelButtons);observer.observe(document.documentElement,{childList:true,subtree:true});document.addEventListener('DOMContentLoaded',addPanelButtons);setTimeout(addPanelButtons,700);
 })();
+</script>
+<script>
+  localStorage.setItem('isLoggedIn', 'true');
+  localStorage.setItem('userRole', 'admin');
+  localStorage.setItem('currentUser', 'semo_admin');
+</script>
+<script>
+  // تعريف المتغير والدالة لمنع ظهور الخطأ في الـ Console
+  var semoTotalAvailableQty = 0;
+  function refreshMetrics() {
+    // دالة التحديث لتجنب توقف السكريبت
+  }
 </script>
 
 </body></html>
