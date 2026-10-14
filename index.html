@@ -3,6 +3,7 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
+ 
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#101b2a">
 <title>منصة SEMO-Oracle-ERP لإدارة شركات التطوير العقاري</title>
@@ -2256,5 +2257,78 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeInvento
     // دالة التحديث لتجنب توقف السكريبت
   }
 </script>
+function importContactsSheet(event){
+ const file = event.target.files && event.target.files[0]; 
+ if(!file) return;
+ 
+ const finish = (rows) => {
+  if(!rows || !rows.length){
+    alert('الملف لا يحتوي على صفوف بيانات قابلة للاستيراد');
+    event.target.value = '';
+    return;
+  }
+  
+  const normalize = v => String(v ?? '').trim().toLowerCase().replace(/[\s_\-]+/g,'');
+  const aliases = {
+   name: ['الاسم','اسمجهةالاتصال','الاسم*','name','contactname','اسم'],
+   type: ['النوع','نوعجهةالاتصال','type','contacttype'],
+   company: ['الشركة','اسم الشركة','الشركة/المؤسسة','company','companyname'],
+   phone: ['الهاتف','رقمالهاتف','تليفون','موبايل','phone','mobile','telephone'],
+   email: ['البريدالإلكتروني','البريد الالكتروني','البريد','email','e-mail'],
+   address: ['العنوان','address'],
+   notes: ['ملاحظات','notes','note']
+  };
+  
+  const headers = (rows[0] || []).map(normalize);
+  const mapIndex = {};
+  
+  for(const [fieldKey, possibleNames] of Object.entries(aliases)){
+   const foundIndex = headers.findIndex(h => possibleNames.includes(h));
+   if(foundIndex !== -1) mapIndex[fieldKey] = foundIndex;
+  }
+  
+  db.contacts = db.contacts || [];
+  let importedCount = 0;
+  
+  for(let i = 1; i < rows.length; i++){
+   const r = rows[i];
+   if(!r || !r.length) continue;
+   
+   const getCol = (key) => mapIndex[key] !== undefined ? String(r[mapIndex[key]] || '').trim() : '';
+   const nameVal = getCol('name') || (mapIndex.name === undefined ? String(r[0] || '').trim() : '');
+   
+   if(!nameVal) continue;
+   
+   db.contacts.push({
+    id: id('CON'),
+    name: nameVal,
+    type: getCol('type') || 'عام',
+    company: getCol('company'),
+    phone: getCol('phone'),
+    email: getCol('email'),
+    address: getCol('address'),
+    notes: getCol('notes'),
+    createdAt: dateNow(),
+    createdBy: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.username : ''
+   });
+   importedCount++;
+  }
+  
+  save();
+  renderModule();
+  event.target.value = '';
+  alert(`تم استيراد ${importedCount} جهة اتصال بنجاح.`);
+ };
 
+ // قراءة الملف (سواء كان CSV أو نصي)
+ const reader = new FileReader();
+ reader.onload = function(e) {
+  const text = e.target.result;
+  // تقسيم النص إلى أسطر ثم إلى أعمدة (مع معالجة الفواصل العادية أو علامات التنصيص)
+  const lines = text.split(/\r\n|\n/).map(line => line.split(',').map(cell => cell.replace(/^"(.*)"$/, '$1').trim()));
+  finish(lines);
+ };
+ reader.readAsText(file, 'UTF-8');
+}
+ 
 </body></html>
